@@ -71,10 +71,15 @@ body.noscroll{overflow:hidden}
 .btn--paper:hover{background:#fff}
 .header .btn{padding:10px 20px;font-size:14px}
 .burger{display:none;background:none;border:none;cursor:pointer;padding:8px}
-.burger span{display:block;width:24px;height:2.5px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.25s}
+.burger span{transition:transform .3s ease,opacity .2s ease,background .2s}
+.burger.is-open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger.is-open span:nth-child(2){opacity:0;transform:scaleX(.4)}
+.burger.is-open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+@media(prefers-reduced-motion:reduce){.nav,.burger span{transition:none}}
+.burger span{display:block;width:24px;height:2.5px;background:var(--ink);margin:5px 0;border-radius:2px}
 @media(max-width:920px){
-  .nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--paper);flex-direction:column;gap:0;padding:10px 24px 20px;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
-  .nav.open{display:flex}
+  .nav{display:flex;position:absolute;top:100%;left:0;right:0;background:var(--paper);flex-direction:column;gap:0;padding:10px 24px 20px;border-bottom:1px solid var(--line);box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-10px);pointer-events:none;transition:opacity .28s ease,transform .28s ease,visibility .28s}
+  .nav.open{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
   .nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
   .burger{display:block}
   .header .btn{display:none}
@@ -940,9 +945,11 @@ const burger=document.getElementById('burger');
 const nav=document.getElementById('nav');
 burger.addEventListener('click',()=>{
   const open=nav.classList.toggle('open');
+  burger.classList.toggle('is-open', nav.classList.contains('open'));
+  burger.setAttribute('aria-label', nav.classList.contains('open')?'Закрыть меню':'Открыть меню');
   burger.setAttribute('aria-expanded',open);
 });
-nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open'),burger.classList.remove('is-open')));
 
 // scroll reveal
 const io=new IntersectionObserver(es=>{
@@ -963,7 +970,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     const id=a.getAttribute('href').slice(1);
     if(id && document.getElementById(id)){
       e.preventDefault();
-      nav.classList.remove('open');
+      nav.classList.remove('open'),burger.classList.remove('is-open');
       scrollToId(id);
     }
   });
@@ -1002,7 +1009,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     const el=id?document.getElementById(id):null;
     if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
     else window.scrollTo({top:0,behavior:'smooth'});
-    if(typeof nav!=='undefined') nav.classList.remove('open');
+    if(typeof nav!=='undefined') nav.classList.remove('open'),burger.classList.remove('is-open');
   });
 });
 </script>
