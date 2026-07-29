@@ -310,7 +310,6 @@ section{padding:88px 0;scroll-margin-top:84px}
 .cpanel__label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B9B6A8;margin-bottom:2px}
 .cpanel__tel{font-size:20px;font-weight:600;letter-spacing:.01em;color:var(--paper);line-height:1.26;transition:color .15s}
 .cpanel__tel:hover{color:var(--wheat)}
-.cpanel__tel em{font-style:normal;font-size:12px;font-weight:500;color:#B9B6A8;letter-spacing:.04em;margin-left:2px}
 .cpanel__mail{font-size:16px;font-weight:500;color:var(--paper);transition:color .15s}
 .cpanel__mail:hover{color:var(--wheat)}
 .cpanel__place{font-size:14px;line-height:1.5;color:var(--paper)}
@@ -919,7 +918,7 @@ section{padding:88px 0;scroll-margin-top:84px}
       <h2>Связаться с САФИТ</h2>
     </div>
     <div class="cmap reveal">
-      <iframe class="cmap__frame" src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D0%B0%D1%84%D0%B8%D1%82%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80&ll=38.995000%2C45.072000&z=11" title="САФИТ на карте Краснодара — офис и филиал" loading="lazy" allowfullscreen></iframe>
+      <iframe class="cmap__frame" data-src-desktop="https://yandex.ru/map-widget/v1/?ll=38.925000%2C45.071000&z=11.5&pt=39.038096%2C45.024431%2Cpm2rdm~39.005000%2C45.118000%2Cpm2rdm" data-src-mobile="https://yandex.ru/map-widget/v1/?ll=39.021000%2C45.071000&z=10.8&pt=39.038096%2C45.024431%2Cpm2rdm~39.005000%2C45.118000%2Cpm2rdm" title="САФИТ на карте Краснодара — офис и филиал" loading="lazy" allowfullscreen></iframe>
       <div class="cpanel">
         <div class="cpanel__head">
           <h3>САФИТ — Краснодар</h3>
@@ -930,7 +929,7 @@ section{padding:88px 0;scroll-margin-top:84px}
           <a class="cpanel__tel" href="tel:+78612316513">+7 (861) 231-65-13</a>
           <a class="cpanel__tel" href="tel:+78612316853">+7 (861) 231-68-53</a>
           <a class="cpanel__tel" href="tel:+78612316821">+7 (861) 231-68-21</a>
-          <a class="cpanel__tel" href="tel:+79884600720">+7 (988) 460-07-20 <em>моб.</em></a>
+          <a class="cpanel__tel" href="tel:+79884600720">+7 (988) 460-07-20</a>
         </div>
         <div class="cpanel__sec">
           <span class="cpanel__label">Почта</span>
@@ -1204,6 +1203,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   }
 
   document.querySelectorAll('input[type=tel]').forEach(apply);
+})();
+</script>
+<script>
+(function(){
+  const f=document.querySelector('.cmap__frame'); if(!f) return;
+  const mob = matchMedia('(max-width:920px)').matches;
+  f.src = mob ? f.dataset.srcMobile : f.dataset.srcDesktop;
 })();
 </script>
 </body>
