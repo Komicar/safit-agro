@@ -86,8 +86,8 @@ body.noscroll{overflow:hidden}
 }
 
 /* ---------- hero ---------- */
-.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:72px;padding-bottom:0}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);padding:0 0 24px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;padding-top:60px;padding-bottom:0}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--field)}
 .eyebrow::before{content:'';width:26px;height:2px;background:var(--red)}
 .hero h1{font-family:var(--display);font-size:clamp(40px,5.2vw,64px);line-height:1.06;font-weight:400;margin:18px 0 20px}
@@ -100,7 +100,7 @@ body.noscroll{overflow:hidden}
 .fact b{display:block;font-family:var(--display);font-size:30px;line-height:1;color:var(--ink);font-weight:400}
 .fact span{font-size:13px;color:var(--ink-2)}
 .hero__art{align-self:center}
-.hero .wrap{min-height:calc(100vh - 205px);grid-template-columns:1fr 1.08fr}
+.hero .wrap{min-height:min(calc(100vh - 160px),820px);grid-template-columns:1fr 1.08fr}
 #hero-scene{display:block;width:106%;max-width:none;height:auto;margin:-24px 0 0 -3%}
 #hero-scene .hs-layer{will-change:transform;transition:transform .35s ease-out}
 /* sun */
@@ -152,7 +152,7 @@ body.noscroll{overflow:hidden}
 }
 .hero__art svg{width:100%;height:auto;display:block}
 @media(max-width:920px){
-  .hero .wrap{grid-template-columns:1fr;padding-top:48px}
+  .hero .wrap{grid-template-columns:1fr;padding-top:40px;min-height:0}
   .hero__art{margin:0 -24px}
   .hero__facts{flex-wrap:wrap;margin-bottom:36px}
   .fact{padding:14px 18px 4px 0;margin-right:18px}
@@ -312,6 +312,8 @@ section{padding:88px 0;scroll-margin-top:84px}
 .modal .field input:focus,.modal .field textarea:focus{outline:none;border-color:var(--field)}
 .modal .field textarea{min-height:80px;resize:vertical}
 .modal__hint{font-size:12px;color:var(--ink-2);margin-top:12px;text-align:center}
+.form__hint a,.modal__hint a{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:rgba(34,36,29,.4);text-decoration-thickness:1px;text-underline-offset:3px;border-radius:3px;transition:color .15s,text-decoration-color .15s}
+.form__hint a:hover,.modal__hint a:hover,.form__hint a:focus-visible,.modal__hint a:focus-visible{color:var(--red);text-decoration-color:var(--red)}
 
 /* ---------- reveal animation ---------- */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
@@ -741,6 +743,13 @@ section{padding:88px 0;scroll-margin-top:84px}
             <p>База — Краснодар, но техника и семена едут в любой регион страны.</p>
           </div>
         </div>
+        <div class="witem reveal">
+          <div class="witem__ico"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4.5 33 9.2v9.6c0 7.6-5.2 13.4-13 16.7-7.8-3.3-13-9.1-13-16.7V9.2L20 4.5Z"/><path d="m14.2 19.8 4.3 4.3 7.9-8.2"/></svg></div>
+          <div>
+            <h3>Обслуживание после покупки</h3>
+            <p>Сопровождаем технику и после сделки: консультируем по настройке, поставляем оригинальные запчасти и расходники — в гарантийный период и после его окончания.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -823,7 +832,7 @@ section{padding:88px 0;scroll-margin-top:84px}
         <textarea id="f-msg" name="message" placeholder="Какая техника или направление вас интересует?"></textarea>
       </div>
       <button type="submit" class="btn btn--red">Отправить заявку</button>
-      <p class="form__hint">Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a>.</p>
+      <p class="form__hint">Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</p>
     </form>
   </div>
 </section>
@@ -933,7 +942,7 @@ section{padding:88px 0;scroll-margin-top:84px}
         <div class="field"><label for="m-phone">Телефон</label><input id="m-phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required></div>
         <div class="field"><label for="m-msg">Комментарий</label><textarea id="m-msg" name="message" placeholder="Культура, площадь, интересующая техника…"></textarea></div>
         <button type="submit" class="btn btn--red" style="width:100%">Отправить заявку</button>
-        <p class="modal__hint">Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a>.</p>
+        <p class="modal__hint">Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>.</p>
       </form>
     </div>
   </div>
