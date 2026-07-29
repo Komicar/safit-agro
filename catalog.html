@@ -19,7 +19,22 @@
   --shadow:0 10px 30px rgba(34,36,29,.08);
   --display:'Forum',serif;
   --body:'Golos Text',system-ui,-apple-system,sans-serif;
-}
+--scroll:#BDB29A;--scroll-h:#9A8F76;}
+/* ---------- scrollbar ---------- */
+html{scrollbar-width:thin;scrollbar-color:var(--scroll) var(--paper-2);scrollbar-gutter:stable}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:var(--paper-2)}
+::-webkit-scrollbar-thumb{background:var(--scroll);border:3px solid var(--paper-2);border-radius:99px;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--scroll-h)}
+::-webkit-scrollbar-thumb:active{background:var(--field)}
+::-webkit-scrollbar-corner{background:var(--paper-2)}
+/* прокрутка поверх затемнённого фона модального окна */
+.modal{scrollbar-color:rgba(247,244,236,.45) transparent}
+.modal::-webkit-scrollbar-track{background:transparent}
+.modal::-webkit-scrollbar-thumb{background:rgba(247,244,236,.45);border-color:transparent}
+.modal::-webkit-scrollbar-thumb:hover{background:rgba(247,244,236,.7)}
+.modal::-webkit-scrollbar-thumb:active{background:rgba(247,244,236,.85)}
+
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;font-size:16px}
 img{max-width:100%;display:block}
