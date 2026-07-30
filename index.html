@@ -310,7 +310,6 @@ section{padding:88px 0;scroll-margin-top:84px}
 .cpanel__label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B9B6A8;margin-bottom:2px}
 .cpanel__tel{font-size:20px;font-weight:600;letter-spacing:.01em;color:var(--paper);line-height:1.26;transition:color .15s}
 .cpanel__tel:hover{color:var(--wheat)}
-.cpanel__tel em{font-style:normal;font-size:12px;font-weight:500;color:#B9B6A8;letter-spacing:.04em;margin-left:2px}
 .cpanel__mail{font-size:16px;font-weight:500;color:var(--paper);transition:color .15s}
 .cpanel__mail:hover{color:var(--wheat)}
 .cpanel__place{font-size:14px;line-height:1.5;color:var(--paper)}
@@ -919,7 +918,7 @@ section{padding:88px 0;scroll-margin-top:84px}
       <h2>Связаться с САФИТ</h2>
     </div>
     <div class="cmap reveal">
-      <iframe class="cmap__frame" src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D0%B0%D1%84%D0%B8%D1%82%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80&ll=38.995000%2C45.072000&z=11" title="САФИТ на карте Краснодара — офис и филиал" loading="lazy" allowfullscreen></iframe>
+      <iframe class="cmap__frame" data-src="https://yandex.ru/map-widget/v1/?ll=39.038096%2C45.024431&z=16&l=map" title="САФИТ на карте — г. Краснодар, ул. Селезнёва, 102" allowfullscreen></iframe>
       <div class="cpanel">
         <div class="cpanel__head">
           <h3>САФИТ — Краснодар</h3>
@@ -930,16 +929,15 @@ section{padding:88px 0;scroll-margin-top:84px}
           <a class="cpanel__tel" href="tel:+78612316513">+7 (861) 231-65-13</a>
           <a class="cpanel__tel" href="tel:+78612316853">+7 (861) 231-68-53</a>
           <a class="cpanel__tel" href="tel:+78612316821">+7 (861) 231-68-21</a>
-          <a class="cpanel__tel" href="tel:+79884600720">+7 (988) 460-07-20 <em>моб.</em></a>
+          <a class="cpanel__tel" href="tel:+79884600720">+7 (988) 460-07-20</a>
         </div>
         <div class="cpanel__sec">
           <span class="cpanel__label">Почта</span>
           <a class="cpanel__mail" href="mailto:safitagro@mail.ru">safitagro@mail.ru</a>
         </div>
         <div class="cpanel__sec">
-          <span class="cpanel__label">Адреса</span>
-          <p class="cpanel__place">г. Краснодар, ул. Селезнёва, 102 <em>— главный офис</em></p>
-          <p class="cpanel__place">г. Краснодар, ул. Черёмуховая, 4 <em>— филиал</em></p>
+          <span class="cpanel__label">Адрес</span>
+          <p class="cpanel__place">г. Краснодар, ул. Селезнёва, 102</p>
         </div>
         <div class="cpanel__acts">
           <a href="https://yandex.ru/maps/?text=%D0%A1%D0%B0%D1%84%D0%B8%D1%82%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80" target="_blank" rel="noopener">Открыть в Яндекс&nbsp;Картах</a>
@@ -1204,6 +1202,18 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   }
 
   document.querySelectorAll('input[type=tel]').forEach(apply);
+})();
+</script>
+<script>
+/* карта грузится только когда доезжаешь до неё — страница открывается быстро */
+(function(){
+  const f=document.querySelector('.cmap__frame'); if(!f||!f.dataset.src) return;
+  const load=()=>{ if(!f.src){ f.src=f.dataset.src; } };
+  if(!('IntersectionObserver' in window)){ load(); return; }
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ load(); io.disconnect(); } });
+  },{rootMargin:'400px'});
+  io.observe(f);
 })();
 </script>
 </body>
