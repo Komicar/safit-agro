@@ -1220,9 +1220,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 })();
 </script>
 <script>
-/* Карта: грузится лениво и НЕ уводит страницу вниз.
-   Виджет Яндекса при инициализации перетягивает фокус на себя — браузер
-   прокручивает к нему. Ниже это заблокировано тремя способами. */
+/* Карта: грузится лениво, когда пользователь доходит до блока контактов.
+   Прокрутка страницы при этом ничем не ограничивается. */
 (function(){
   const f=document.querySelector('.cmap__frame'); if(!f) return;
 
@@ -1238,48 +1237,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     return u;
   }
 
-  /* если пользователь только что кликнул пункт меню — идёт плавная прокрутка,
-     удерживать страницу нельзя, иначе она замрёт на полпути */
-  let navUntil=0;
-  document.addEventListener('click', e=>{
-    const a=e.target.closest('a[href^="#"]');
-    if(a) navUntil=Date.now()+2000;
-  }, true);
-
   let loaded=false;
   function show(){
     if(loaded) return; loaded=true;
-    const navigating = Date.now() < navUntil;
-
-    /* Держим позицию страницы, пока виджет инициализируется:
-       он ставит фокус на свой iframe, и браузер прокручивает к нему. */
-    const keepY=window.scrollY, keepX=window.scrollX;
-    let hold=true;
-    const release=()=>{ hold=false; };
-
-    /* любое действие пользователя сразу снимает удержание */
-    ['wheel','touchstart','keydown','mousedown'].forEach(ev=>
-      window.addEventListener(ev, release, {passive:true, once:true}));
-
-    if(navigating) hold=false;
-    (function keep(){
-      if(!hold) return;
-      if(document.activeElement===f) f.blur();
-      if(window.scrollY!==keepY || window.scrollX!==keepX) window.scrollTo(keepX, keepY);
-      requestAnimationFrame(keep);
-    })();
-    setTimeout(release, 2500);
-
+    /* виджет любит забирать фокус на себя — снимаем его, страницу не трогаем */
+    f.addEventListener('load', ()=>{ if(document.activeElement===f) f.blur(); }, {once:true});
     f.src=buildSrc();
   }
 
-  /* наблюдаем только когда вёрстка окончательно сложилась,
+  /* наблюдаем только после полной загрузки страницы:
      иначе блок ещё «наверху» и карта грузится сразу при заходе */
   function start(){
     if(!('IntersectionObserver' in window)){ show(); return; }
     const io=new IntersectionObserver(es=>{
       es.forEach(e=>{ if(e.isIntersecting){ show(); io.disconnect(); } });
-    },{rootMargin:'200px'});
+    },{rootMargin:'300px'});
     io.observe(f);
   }
   if(document.readyState==='complete') start();
