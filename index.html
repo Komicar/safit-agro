@@ -299,7 +299,7 @@ section{padding:88px 0;scroll-margin-top:84px}
 /* ---------- contacts ---------- */
 /* ---------- контакты: карта с панелью ---------- */
 .cmap{position:relative;height:640px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper-2);box-shadow:var(--shadow)}
-.cmap__frame{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cmap__frame{position:absolute;top:0;right:0;bottom:0;left:390px;width:calc(100% - 390px);height:100%;border:0}
 .cpanel{position:absolute;top:0;left:0;bottom:0;width:390px;background:var(--ink);color:var(--paper);padding:28px 32px 22px;display:flex;flex-direction:column;gap:15px;overflow-y:auto;box-shadow:8px 0 30px rgba(34,36,29,.28)}
 .cpanel::-webkit-scrollbar{width:8px}
 .cpanel::-webkit-scrollbar-track{background:transparent}
@@ -319,7 +319,7 @@ section{padding:88px 0;scroll-margin-top:84px}
 .cpanel__acts a:hover{text-decoration:underline}
 @media(max-width:920px){
   .cmap{height:auto;display:flex;flex-direction:column;background:var(--ink)}
-  .cmap__frame{position:static;order:2;height:380px;min-height:380px}
+  .cmap__frame{position:static;order:2;left:auto;width:100%;height:380px;min-height:380px}
   .cpanel{position:static;width:auto;order:1;box-shadow:none;padding:26px 22px 22px}
   .cpanel__acts{margin-top:2px}
 }
