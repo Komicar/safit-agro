@@ -300,13 +300,6 @@ section{padding:88px 0;scroll-margin-top:84px}
 /* ---------- контакты: карта с панелью ---------- */
 .cmap{position:relative;height:640px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper-2);box-shadow:var(--shadow)}
 .cmap__frame{position:absolute;inset:0;width:100%;height:100%;border:0}
-.cmap__shield{position:absolute;inset:0;cursor:pointer;background:transparent}
-.cmap__pin{position:absolute;left:50%;top:50%;transform:translate(-8.5px,-50%);display:flex;align-items:center;gap:7px;background:none;border:0;padding:0;cursor:pointer;font-family:var(--body)}
-.cmap__dot{width:17px;height:17px;border-radius:50%;background:#2C6BED;border:3px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.4);flex:0 0 auto;transition:transform .15s}
-.cmap__cap{background:#fff;color:#21201F;font-size:13.5px;font-weight:600;line-height:1;padding:5px 9px;border-radius:5px;box-shadow:0 1px 5px rgba(0,0,0,.28);white-space:nowrap}
-.cmap__pin:hover .cmap__dot{transform:scale(1.15)}
-.cmap__pin:focus-visible{outline:3px solid var(--wheat);outline-offset:4px;border-radius:6px}
-.cmap__pin::before{content:"";position:absolute;left:-15px;top:50%;transform:translateY(-50%);width:47px;height:47px;border-radius:50%}
 .cpanel{position:absolute;top:0;left:0;bottom:0;width:390px;background:var(--ink);color:var(--paper);padding:28px 32px 22px;display:flex;flex-direction:column;gap:15px;overflow-y:auto;box-shadow:8px 0 30px rgba(34,36,29,.28)}
 .cpanel::-webkit-scrollbar{width:8px}
 .cpanel::-webkit-scrollbar-track{background:transparent}
@@ -327,7 +320,6 @@ section{padding:88px 0;scroll-margin-top:84px}
 @media(max-width:920px){
   .cmap{height:auto;display:flex;flex-direction:column;background:var(--ink)}
   .cmap__frame{position:static;order:2;height:380px;min-height:380px}
-  .cmap__shield{top:auto;bottom:0;height:380px}
   .cpanel{position:static;width:auto;order:1;box-shadow:none;padding:26px 22px 22px}
   .cpanel__acts{margin-top:2px}
 }
@@ -926,12 +918,21 @@ section{padding:88px 0;scroll-margin-top:84px}
       <h2>Связаться с САФИТ</h2>
     </div>
     <div class="cmap reveal">
-      <iframe class="cmap__frame" data-plain="https://yandex.ru/map-widget/v1/?ll=39.038096%2C45.024431&z=12&l=map" data-poi="https://yandex.ru/map-widget/v1/?text=%D0%A1%D0%B0%D1%84%D0%B8%D1%82%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B4%D0%B0%D1%80&ll=39.038096%2C45.024431&z=12" title="САФИТ на карте — г. Краснодар, ул. Селезнёва, 102" allowfullscreen></iframe>
-      <div class="cmap__shield" id="cmapShield">
-        <button type="button" class="cmap__pin" id="cmapPin" aria-label="Показать карточку САФИТ на карте">
-          <span class="cmap__dot"></span><span class="cmap__cap">Сафит</span>
-        </button>
-      </div>
+      <iframe class="cmap__frame"
+        data-um=""
+        data-plain="https://yandex.ru/map-widget/v1/?ll=39.038096%2C45.024431&z=12&l=map"
+        title="САФИТ на карте — г. Краснодар, ул. Селезнёва, 102" allowfullscreen></iframe>
+      <!-- ============================================================
+           КАРТА. Чтобы появилась круглая метка с подписью «САФИТ»
+           и всплывающий адрес по клику (как у конкурентов):
+           1) yandex.ru/map-constructor → создать карту
+           2) поставить метку на Селезнёва, 102, задать подпись и описание
+           3) выставить нужный вид карты (масштаб 2 км, офис по центру)
+           4) «Сохранить и продолжить» → «Код для вставки» → iframe
+           5) из полученного адреса скопировать ID после constructor:
+              и вставить его в data-um выше, например data-um="a1b2c3d4e5..."
+           Пока data-um пустой — показывается обычная карта без метки.
+           ============================================================ -->
       <div class="cpanel">
         <div class="cpanel__head">
           <h3>САФИТ — Краснодар</h3>
@@ -1218,26 +1219,25 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 })();
 </script>
 <script>
-/* Карта: грузится лениво и БЕЗ карточки. Карточка появляется только по клику на метку. */
+/* Карта: грузится лениво. Если в data-um указан ID карты из Конструктора Яндекса —
+   показывается она (круглая метка с подписью, адрес по клику, карточка сама не открывается).
+   Пока ID не вписан — обычная карта из data-plain. */
 (function(){
-  const f=document.querySelector('.cmap__frame');
-  const shield=document.getElementById('cmapShield');
-  const pin=document.getElementById('cmapPin');
-  if(!f) return;
+  const f=document.querySelector('.cmap__frame'); if(!f) return;
 
-  const show=()=>{ if(!f.src) f.src=f.dataset.plain; };
+  function buildSrc(){
+    let um=(f.dataset.um||'').trim();
+    if(!um) return f.dataset.plain;
+    const m=um.match(/constructor(?:%3A|:)([\w-]+)/i);
+    if(m) um=m[1];
+    return 'https://yandex.ru/map-widget/v1/?um=constructor%3A'+um+'&source=constructor';
+  }
+
+  const show=()=>{ if(!f.src) f.src=buildSrc(); };
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){show();io.disconnect();}});},{rootMargin:'400px'});
     io.observe(f);
   } else show();
-
-  if(!shield) return;
-  shield.addEventListener('click', e=>{
-    if(pin && e.target.closest('.cmap__pin')){
-      f.src = f.dataset.poi;      // клик по метке — Яндекс покажет организацию с карточкой
-    }
-    shield.remove();              // дальше карта работает как обычно
-  });
 })();
 </script>
 </body>
