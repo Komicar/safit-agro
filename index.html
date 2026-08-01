@@ -920,6 +920,8 @@ section{padding:88px 0;scroll-margin-top:84px}
     <div class="cmap reveal">
       <iframe class="cmap__frame"
         data-um="e416ce2db67c6cf556458f6e28354a8d2a305499c1386b410f855a97c56a457d"
+        data-ll="39.038096,45.024431"
+        data-z="12"
         data-plain="https://yandex.ru/map-widget/v1/?ll=39.038096%2C45.024431&z=12&l=map"
         title="САФИТ на карте — г. Краснодар, ул. Селезнёва, 102" allowfullscreen></iframe>
       <!-- ============================================================
@@ -1230,7 +1232,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(!um) return f.dataset.plain;
     const m=um.match(/constructor(?:%3A|:)([\w-]+)/i);
     if(m) um=m[1];
-    return 'https://yandex.ru/map-widget/v1/?um=constructor%3A'+um+'&source=constructor';
+    let u='https://yandex.ru/map-widget/v1/?um=constructor%3A'+um+'&source=constructor';
+    const ll=(f.dataset.ll||'').trim(), z=(f.dataset.z||'').trim();
+    if(ll) u+='&ll='+encodeURIComponent(ll);
+    if(z)  u+='&z='+encodeURIComponent(z);
+    return u;
   }
 
   const show=()=>{ if(!f.src) f.src=buildSrc(); };
